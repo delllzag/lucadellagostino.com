@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coloring Our Fears — Luca Dell'Agostino</title>
+  
+  
+  
+  <style>
+    @font-face {
+      font-family: 'Jost';
+      src: url('fonts/Jost-VariableFont_wght.ttf') format('truetype');
+      font-weight: 100 900;
+      font-style: normal;
+      font-display: block;
+    }
+
+    @font-face {
+      font-family: 'Jost';
+      src: url('fonts/Jost-Italic-VariableFont_wght.ttf') format('truetype');
+      font-weight: 100 900;
+      font-style: italic;
+      font-display: block;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --header-height: 68px;
+      --hairline: #d6d6d6;
+      --text-primary: #111111;
+      --text-secondary: #555555;
+      --bg: #ffffff;
+      --font-display: 'Jost', sans-serif;
+      --font-body: 'Jost', sans-serif;
+      --gap: 24px; /* universal spacing unit */
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: var(--bg);
+      height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .header-identity {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      text-decoration: none;
+      color: inherit;
+      padding: 4px 0;
+    }
+
+    .header-name {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    .header-role {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+      color: var(--text-secondary);
+      line-height: 1.4;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .header-nav a {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .header-nav a:hover { color: var(--text-primary); }
+
+    /* ─── PAGE WRAPPER ─── */
+    .page {
+      margin-top: var(--header-height);
+      padding: 44px 40px 44px;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ─── TITLE ─── */
+    .project-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: var(--gap);
+    }
+
+    /* ─── SLIDESHOW ─── */
+    .slideshow-wrap {
+      margin-bottom: var(--gap);
+    }
+
+    .slideshow {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 5 / 4;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      transform: translateX(100%);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      will-change: transform;
+    }
+
+    .slide.active {
+      transform: translateX(0%);
+    }
+
+    .slide.exiting-left {
+      transform: translateX(-100%);
+    }
+
+    .slide.exiting-right {
+      transform: translateX(100%);
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .slideshow-dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #ccc;
+      transition: background 0.3s ease;
+      cursor: pointer;
+    }
+
+    .dot.active { background: var(--text-primary); }
+
+    .slideshow-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .slideshow-row .slideshow {
+      flex: 1;
+    }
+
+    .slide-arrow {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid #767676;
+      background: none;
+      color: #767676;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.2s ease;
+      opacity: 0.7;
+      line-height: 1;
+    }
+
+    .slide-arrow:hover { opacity: 1; }
+
+    /* ─── DESCRIPTION ─── */
+    .project-description {
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text-primary);
+      text-align: left;
+      margin-bottom: var(--gap);
+    }
+
+    /* ─── META ─── */
+    .project-meta {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-bottom: var(--gap);
+    }
+
+    .project-meta span {
+      font-family: var(--font-display);
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    .project-meta strong {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* ─── DIVIDER ─── */
+    .project-divider {
+      border: none;
+      border-top: 1px solid var(--hairline);
+      margin-bottom: var(--gap);
+    }
+
+    /* ─── BODY: paragraphs & inline images share --gap spacing ─── */
+    .project-body > * + * {
+      margin-top: var(--gap);
+    }
+
+    .project-body p {
+      font-family: var(--font-body);
+      font-weight: 300;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text-primary);
+      text-align: left;
+    }
+
+    .inline-img {
+      width: 100%;
+      aspect-ratio: 5 / 4;
+      border: 1px solid var(--hairline);
+      overflow: hidden;
+      background: #f0f0f0;
+    }
+
+    .inline-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+        /* ─── LET'S CONNECT ─── */
+    .connect {
+      padding: 44px 40px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .connect-title {
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 1rem;
+      letter-spacing: 0.01em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 24px;
+    }
+
+    .connect-icons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .connect-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      opacity: 0.6;
+      transition: opacity 0.2s ease;
+    }
+
+    .connect-icon:hover { opacity: 1; }
+    .connect-icon svg { width: 22px; height: 22px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+            padding: 24px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+    }
+
+    .footer-copyright {
+      grid-column: 2;
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: #767676;
+      text-align: center;
+    }
+
+    .footer-top {
+      grid-column: 3;
+      justify-self: end;
+      background: none;
+      border: 1px solid var(--hairline);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      transition: border-color 0.2s ease, color 0.2s ease;
+      text-decoration: none;
+    }
+
+    .footer-top:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <a class="header-identity" href="index.html">
+      <span class="header-name">Luca Dell'Agostino</span>
+      <span class="header-role">Visual Designer</span>
+    </a>
+    <nav class="header-nav">
+      <a href="projects.html">Projects</a>
+      <a href="serigraphy.html">Serigraphy</a>
+      <a href="index.html#about">About</a>
+    </nav>
+  </header>
+
+  <div class="page" id="top">
+
+    <!-- SLIDESHOW -->
+    <div class="slideshow-wrap">
+      <div class="slideshow-row">
+        <button class="slide-arrow" id="arrow-prev" aria-label="Previous">&#8592;</button>
+        <div class="slideshow" id="slideshow">
+          <div class="slide active"><img src="ColoringOurFears/COLORINGOURFEARS_thumbnail.jpg" alt="Cover"></div>
+          <div class="slide"><img src="ColoringOurFears/COLORINGOURFEARS_1.jpg"  alt="Cover Detail"></div>
+          <div class="slide"><img src="ColoringOurFears/COLORINGOURFEARS_2.jpg" alt="The Psychosocial Model"></div>
+          <div class="slide"><img src="ColoringOurFears/COLORINGOURFEARS_3.jpg" alt="Cynophobia"></div>
+          <div class="slide"><img src="ColoringOurFears/COLORINGOURFEARS_4.jpg" alt="Claustrophobia"></div>
+          <div class="slide"><img src="ColoringOurFears/COLORINGOURFEARS_5.jpg" alt="Coloring Page"></div>
+        </div>
+        <button class="slide-arrow" id="arrow-next" aria-label="Next">&#8594;</button>
+      </div>
+      <div class="slideshow-dots" id="dots"></div>
+    </div>
+
+    <!-- TITLE -->
+    <h1 class="project-title">Coloring Our Fears</h1>
+
+    <!-- DESCRIPTION -->
+    <p class="project-description">A coloring book for exploring how creativity can support mental health awareness through activity (coloring) and education (read about phobias). Future goals include refining the phobia descriptions, updating the infographic data, and expanding the project with new contributors and larger&nbsp;format&nbsp;editions.</p>
+
+    <!-- META -->
+    <div class="project-meta">
+      <span><strong>Tools</strong> &nbsp; Adobe Photoshop &amp; Illustrator</span>
+      <span><strong>Timeline</strong> &nbsp; 3–4 months</span>
+    </div>
+
+    <!-- DIVIDER -->
+    <hr class="project-divider">
+
+    <!-- BODY -->
+    <div class="project-body">
+
+      <p>Four peer-reviewed psychiatric studies were distilled into two evidence-based infographics — one on the opening page, one on the back cover, each with QR codes linking to the&nbsp;source&nbsp;material.</p>
+
+      <div class="inline-img">
+        <img src="ColoringOurFears/COLORINGOURFEARS_1.jpg" alt="Cover">
+      </div>
+
+      <div class="inline-img">
+        <img src="ColoringOurFears/COLORINGOURFEARS_2.jpg" alt="The Psychosocial Model">
+      </div>
+
+      <p>Over twenty-five participants transformed patterned line drawings into expressive illustrations using Sharpies. Open interpretation. The result is a series of zine-like, hand-drawn artworks acting as the coloring&nbsp;pages.</p>
+
+      <div class="inline-img">
+        <img src="ColoringOurFears/COLORINGOURFEARS_3.jpg" alt="Cynophobia">
+      </div>
+
+      <div class="inline-img">
+        <img src="ColoringOurFears/COLORINGOURFEARS_4.jpg" alt="Claustrophobia">
+      </div>
+
+      <p>To structure the book's layout from start to finish, 5 phobias were selected from each of the 5 phobia categories then paired randomly with the submitted illustrations. The first edition of fifty copies was printed and bound through university&nbsp;print&nbsp;services.</p>
+
+      <div class="inline-img">
+        <img src="ColoringOurFears/COLORINGOURFEARS_5.jpg" alt="Coloring Page">
+      </div>
+
+    </div>
+  </div>
+
+  <!-- LET'S CONNECT -->
+  <section class="connect" id="connect">
+    <p class="connect-title">Let's Connect</p>
+    <div class="connect-icons">
+
+      <a class="connect-icon" href="https://www.linkedin.com/in/luca-dell-agostino-9132b2307/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+        </svg>
+        LinkedIn
+      </a>
+
+      <a class="connect-icon" href="mailto:delllzag@gmail.com" aria-label="Email">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2"/>
+          <polyline points="2,4 12,13 22,4"/>
+        </svg>
+        Email
+      </a>
+
+      <a class="connect-icon" href="https://www.instagram.com/cahsmuka/?hl=en" target="_blank" rel="noopener" aria-label="Instagram">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5"/>
+          <circle cx="12" cy="12" r="5"/>
+          <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        Instagram
+      </a>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span></span>
+    <p class="footer-copyright">copyright 2026 lucadellagostino.com all rights reserved</p>
+    <a class="footer-top" href="#top" aria-label="Back to top">↑</a>
+  </footer>
+
+  <script>
+    const slides        = document.querySelectorAll('.slide');
+    const dotsContainer = document.getElementById('dots');
+    const total         = slides.length;
+    let current         = 0;
+    let timer           = null;
+    let animating       = false;
+    let timerStopped    = false;
+
+    // Build dots
+    slides.forEach((_, i) => {
+      const dot = document.createElement('div');
+      dot.className = 'dot' + (i === 0 ? ' active' : '');
+      dot.addEventListener('click', () => goTo(i, i > current ? 'forward' : 'back'));
+      dotsContainer.appendChild(dot);
+    });
+
+    function goTo(next, direction) {
+      if (animating || next === current) return;
+      animating = true;
+
+      const prev = current;
+      const incoming = slides[next];
+      const outgoing = slides[prev];
+
+      incoming.style.transition = 'none';
+      incoming.style.transform  = direction === 'forward' ? 'translateX(100%)' : 'translateX(-100%)';
+      incoming.classList.remove('active', 'exiting-left', 'exiting-right');
+
+      incoming.getBoundingClientRect();
+
+      incoming.style.transition = '';
+      incoming.style.transform  = 'translateX(0%)';
+
+      outgoing.style.transition = '';
+      outgoing.style.transform  = direction === 'forward' ? 'translateX(-100%)' : 'translateX(100%)';
+      outgoing.classList.remove('active');
+
+      dotsContainer.children[current].classList.remove('active');
+      dotsContainer.children[next].classList.add('active');
+
+      current = next;
+
+      setTimeout(() => {
+        outgoing.style.transition = 'none';
+        outgoing.style.transform  = 'translateX(100%)';
+        incoming.classList.add('active');
+        animating = false;
+      }, 520);
+    }
+
+    function next() { goTo((current + 1) % total, 'forward'); }
+    function prev() { goTo((current - 1 + total) % total, 'back'); }
+
+    function startTimer() {
+      if (timerStopped) return;
+      stopTimer();
+      timer = setInterval(next, 5000);
+    }
+
+    function stopTimer() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    // Arrow buttons — clicking permanently stops auto-advance
+    document.getElementById('arrow-prev').addEventListener('click', () => {
+      timerStopped = true;
+      stopTimer();
+      prev();
+    });
+
+    document.getElementById('arrow-next').addEventListener('click', () => {
+      timerStopped = true;
+      stopTimer();
+      next();
+    });
+
+    startTimer();
+  </script>
+
+</body>
+</html>
