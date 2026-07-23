@@ -267,6 +267,9 @@
         overflow: visible;
         display: flex;
         flex-direction: column;
+        background: none;
+        text-decoration: none;
+        gap: 12px;
       }
 
       .project-item img {
@@ -279,10 +282,10 @@
         inset: auto;
         opacity: 1;
         background: none;
-        align-items: flex-start;
+        align-items: center;
         justify-content: flex-start;
         gap: 4px;
-        padding-top: 10px;
+        padding-top: 0;
       }
 
       .project-item:hover .project-overlay {
@@ -291,13 +294,15 @@
 
       .overlay-title {
         color: var(--text-primary);
-        text-align: left;
+        text-align: center;
+        text-decoration: none;
         padding: 0;
       }
 
       .overlay-tagline {
         color: var(--text-secondary);
-        text-align: left;
+        text-align: center;
+        text-decoration: none;
         padding: 0;
       }
     }

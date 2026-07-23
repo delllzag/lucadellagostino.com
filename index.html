@@ -134,6 +134,7 @@
       .hero {
         height: 45vh;
         background-size: contain;
+        background-position: top center;
       }
     }
 
@@ -144,6 +145,14 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
+    }
+
+    .about-portrait {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 28px;
     }
 
     .about-title {
@@ -355,6 +364,7 @@
 
   <!-- ABOUT ME -->
   <section class="about" id="about">
+    <img class="about-portrait" src="AboutMe/portrait.jpg" alt="Portrait of Luca Dell'Agostino">
     <p class="about-title">About Me</p>
     <p class="about-text">San Francisco-based visual designer with a BFA in Communications Design and hands-on experience across digital and print mediums. I work at the intersection of concept and craft — from vector illustration and brand identity development to kinetic typography and graphic production — using tools like Adobe Creative Suite and Figma to bring ideas to life with precision and intention.</p>
   </section>
