@@ -258,16 +258,47 @@
 
       .projects-grid {
         grid-template-columns: 1fr;
-        gap: 16px;
+        gap: 28px;
       }
 
       .project-item {
+        position: static;
+        aspect-ratio: auto;
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .project-item img {
         aspect-ratio: 4 / 3;
+        object-fit: cover;
       }
 
       .project-overlay {
+        position: static;
+        inset: auto;
         opacity: 1;
-        background: rgba(10, 10, 10, 0.55);
+        background: none;
+        align-items: flex-start;
+        justify-content: flex-start;
+        gap: 4px;
+        padding-top: 10px;
+      }
+
+      .project-item:hover .project-overlay {
+        opacity: 1;
+      }
+
+      .overlay-title {
+        color: var(--text-primary);
+        text-align: left;
+        padding: 0;
+      }
+
+      .overlay-tagline {
+        color: var(--text-secondary);
+        text-align: left;
+        padding: 0;
       }
     }
 
@@ -356,28 +387,29 @@
 
       .header-nav {
         position: fixed;
-        top: var(--header-height);
-        left: 0;
-        right: 0;
+        inset: 0;
+        z-index: 99;
         flex-direction: column;
-        align-items: stretch;
-        gap: 0;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
         background: var(--bg);
-        border-bottom: 1px solid var(--hairline);
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.25s ease;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.25s ease;
       }
 
       .header-nav.open {
-        max-height: 240px;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
       }
 
       .header-nav a {
-        width: 100%;
-        padding: 16px 20px;
-        border-top: 1px solid var(--hairline);
-        font-size: 0.85rem;
+        font-size: 1.15rem;
+        letter-spacing: 0.15em;
+        padding: 14px 0;
       }
     }
   
@@ -516,12 +548,14 @@
       hamburger.addEventListener('click', function () {
         var isOpen = hamburger.classList.toggle('open');
         headerNav.classList.toggle('open');
+        document.body.style.overflow = isOpen ? 'hidden' : '';
         hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
       });
       headerNav.querySelectorAll('a').forEach(function (link) {
         link.addEventListener('click', function () {
           hamburger.classList.remove('open');
           headerNav.classList.remove('open');
+          document.body.style.overflow = '';
           hamburger.setAttribute('aria-expanded', 'false');
         });
       });
