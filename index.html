@@ -242,6 +242,86 @@
       border-color: var(--text-primary);
       color: var(--text-primary);
     }
+  
+    /* ─── HAMBURGER (mobile) ─── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 32px;
+      height: 32px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 110;
+    }
+
+    .hamburger span {
+      display: block;
+      width: 100%;
+      height: 1.5px;
+      background: var(--text-primary);
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    @media (max-width: 680px) {
+      header {
+        padding: 0 20px;
+      }
+
+      .header-role {
+        display: none;
+      }
+
+      .header-name {
+        font-size: 0.85rem;
+      }
+
+      .hamburger {
+        display: flex;
+      }
+
+      .header-nav {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--hairline);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.25s ease;
+      }
+
+      .header-nav.open {
+        max-height: 240px;
+      }
+
+      .header-nav a {
+        width: 100%;
+        padding: 16px 20px;
+        border-top: 1px solid var(--hairline);
+        font-size: 0.85rem;
+      }
+    }
+  
+    @media (max-width: 680px) {
+      .about,
+      .connect,
+      footer {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -252,6 +332,9 @@
       <span class="header-name">Luca Dell'Agostino</span>
       <span class="header-role">Visual Designer</span>
     </a>
+    <button class="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <nav class="header-nav">
       <a href="projects.html">Projects</a>
       <a href="serigraphy.html">Serigraphy</a>
@@ -307,5 +390,24 @@
     <a class="footer-top" href="#top" aria-label="Back to top">↑</a>
   </footer>
 
+  <script>
+    (function () {
+      var hamburger = document.querySelector('.hamburger');
+      var headerNav = document.querySelector('.header-nav');
+      if (!hamburger || !headerNav) return;
+      hamburger.addEventListener('click', function () {
+        var isOpen = hamburger.classList.toggle('open');
+        headerNav.classList.toggle('open');
+        hamburger.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+      headerNav.querySelectorAll('a').forEach(function (link) {
+        link.addEventListener('click', function () {
+          hamburger.classList.remove('open');
+          headerNav.classList.remove('open');
+          hamburger.setAttribute('aria-expanded', 'false');
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
